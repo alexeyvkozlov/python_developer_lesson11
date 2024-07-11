@@ -6,11 +6,12 @@ import pytest
 from faker import Faker
 from mock import patch
 
+
 from lotto_game import Cart, PlayerComp, PlayerHuman, Game
 
 fake = Faker('ru-RU')
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 @pytest.mark.parametrize('num_menu, p1, p2', (['1', PlayerHuman, PlayerComp],
                                               ['2', PlayerHuman, PlayerHuman],
                                               ['3', PlayerComp, PlayerComp]))
@@ -20,7 +21,7 @@ def test_start(num_menu, p1, p2):
     assert isinstance(game.player1, p1) and isinstance(game.player2, p2), \
       f'Ошибка определения игроков в {num_menu} пункте'
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 @pytest.fixture
 def fix5():
   p1 = PlayerComp()
@@ -41,7 +42,7 @@ def fix5():
   game.player2 = p2
   return game
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 @pytest.mark.parametrize('num, ans, not_ans', ([30, 'First', 'Second'], [20, 'Second', 'First']))
 def test_exit(fix5, num, ans, not_ans):
   fix5.bag = [num]
