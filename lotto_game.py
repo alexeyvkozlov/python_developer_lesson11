@@ -2,8 +2,8 @@
 # cd c:\python_developer
 # cd d:\python_developer
 # .\pydev\Scripts\activate
-# cd c:\python_developer\python_developer_lesson10
-# cd d:\python_developer\python_developer_lesson10
+# cd c:\python_developer\python_developer_lesson11
+# cd d:\python_developer\python_developer_lesson11
 #~~~~~~~~~~~~~~~~~~~~~~~~
 # python lotto_game.py
 #~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,6 +11,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from random import sample  #~ выбор случайного набора
 from collections import defaultdict  #~ объявление словаря со значениями нужного типа
+
 from faker import Faker  #~ объявление типа для фиксации случайных имен
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,8 +20,8 @@ fake = Faker('ru-RU')  #~ объект класса с русским набор
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def define_cart(new_cart):
   """
-  Получает карту, и возвращает множество номеров из нее
-  :param new_cart: карта с номерами
+  Получает карту, и возвращает множество номеров из нее.
+  :param new_cart: карта с номерами.
   :return: множество номеров карты
   """
   eq = set()
@@ -73,7 +74,7 @@ class Cart:
   @property
   def is_empty(self):
     """
-    Проверка на отсутствие цифр в карточке
+    Проверка на отсутствие цифр в карточке.
     :return: bool
     """
     return len(define_cart(self.cart)) == 0
@@ -89,7 +90,7 @@ class Cart:
   def cross_out(self, num):
     """
     Замена числа в карточке на символ "-"
-    :param num: номер для поиска
+    :param num: номер для поиска.
     :return: все изменения производятся в картоке
     """
     for item in self.cart:
@@ -100,7 +101,7 @@ class Cart:
       except ValueError:
         pass
 
-  def out_print(self):
+  def __str__(self):
     """
     Подготовка карточки для вывода на экран.
     :return: стока для вывода
@@ -113,6 +114,12 @@ class Cart:
       s += '|\n'
     s += ' ' + '-' * 30 + '\n'
     return s
+
+  def __eq__(self, other):
+    if isinstance(other, Cart):
+      cart1 = define_cart(self.cart)
+      cart2 = define_cart(other.cart)
+      return len(cart1) == len(cart2) and cart1 == cart2
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class PlayerComp:
@@ -133,7 +140,7 @@ class PlayerComp:
     :param num: номер бочонка
     :return: bool
     """
-    print(self.cart.out_print())
+    print(self.cart)
     if self.cart.is_num_to_cart(num):
       self.cart.cross_out(num)
       print('Номер есть')
@@ -152,7 +159,7 @@ class PlayerHuman:
     print(f'Имя игрока: {self.name}')
 
   def step(self, num):
-    print(self.cart.out_print())
+    print(self.cart)
     ans = input('Зачеркнуть цифру (Д/Н)? ')
     while ans not in 'ДдНн':
       ans = input('Некорректный ввод. Зачеркнуть цифру (Д/Н)? ')
@@ -203,14 +210,13 @@ class Game:
     n = input('Введите номер пункта: ')
     while n not in '1234':
       n = input('Некорректный ввод. Введите номер пункта: ')
-    n = int(n)
-    if n == 1:
+    if n == '1':
       self.player1 = PlayerHuman()
       self.player2 = PlayerComp()
-    elif n == 2:
+    elif n == '2':
       self.player1 = PlayerHuman()
       self.player2 = PlayerHuman()
-    elif n == 3:
+    elif n == '3':
       self.player1 = PlayerComp()
       self.player2 = PlayerComp()
     else:
